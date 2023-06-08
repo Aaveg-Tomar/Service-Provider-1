@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-hot-toast';
 
 const SignIn = () => {  
     const navigate=useNavigate();
@@ -41,6 +42,7 @@ const SignIn = () => {
         const data=await res.json();
         if(data.status===400 || !data){
             console.log("Fail to Sign Up");
+            toast.error("Error Sign Up Failed");
         }else{
             console.log("Success");
             navigate('/signin');

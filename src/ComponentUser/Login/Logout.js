@@ -1,7 +1,7 @@
 import { useEffect,useContext } from 'react';
 import {useNavigate } from 'react-router-dom';
 import { userContext } from '../../App';
-
+import { toast } from 'react-hot-toast';
 
 const Logout = () => {
     const {state,dispatch}=useContext(userContext);  
@@ -19,7 +19,7 @@ const Logout = () => {
             })
             if(res.status===400){
                 console.log("Error");
-                throw new Error("Logout Failed")
+                throw new toast.error("Logout Failed")
             }else{  
                 dispatch({type:"USER",payload:0});
                 navigate('/');
