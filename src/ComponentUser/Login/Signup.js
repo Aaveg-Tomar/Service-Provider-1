@@ -3,13 +3,31 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';
+import {getAuth,GoogleAuthProvider,signInWithPopup} from 'firebase/auth'
+import { app } from '../../config/firebase.config';
 
 const SignIn = () => {  
+    const firebaseAuth = getAuth(app);
+    const provider= new GoogleAuthProvider();
+
     const navigate=useNavigate();
 
     const [userData,setuserData]=useState({
         fname:"",lname:"",email:"",mobile:"",password:"",cpassword:""
     })
+
+//used for firebase authentication
+const [auth, setAuth]= useState(false||window.localStorage.getItem("auth")===true);
+const loginWithGoogle = async ()=>{
+  await signInWithPopup(firebaseAuth,provider).then((userCred)=>{
+    if(userCred){
+      setAuth(true);
+      navigate('/');
+    }
+  })
+}
+
+
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -147,6 +165,14 @@ const SignIn = () => {
                         </form>
                     </div>
                 </div>
+                <div>
+              <h4>Sign up with google  <br />
+              <button onClick={loginWithGoogle}
+               className='rounded-full py-2 px-3 uppercase text-xs font-medium border-spacing-1 bg-red-600 text-cyan-50'> 
+               click here</button>
+              </h4>
+            </div>
+
 
                 <div className="hidden md:block bg-[url('https://img.freepik.com/free-vector/cleaner-with-cleaning-products-housekeeping-service_18591-52057.jpg?w=740&t=st=1682167423~exp=1682168023~hmac=f0aae2ea84ab46eea6a12d64dadd8e9a92ac895b93fdb4d55d2fab433abef97b')] bg-right bg-no-repeat w-full h-full">
                 </div>

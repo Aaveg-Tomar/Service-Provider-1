@@ -6,6 +6,8 @@ import { userContext } from '../../App';
 import {getAuth,GoogleAuthProvider,signInWithPopup} from 'firebase/auth'
 import { app } from '../../config/firebase.config';
 import{toast} from 'react-hot-toast';
+
+
 const Login = () => {
   const firebaseAuth = getAuth(app);
   const provider= new GoogleAuthProvider();
