@@ -3,11 +3,27 @@ import { Link,useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { userContext } from '../../App';
+import {getAuth,GoogleAuthProvider,signInWithPopup} from 'firebase/auth'
+import { app } from '../../config/firebase.config';
+import{toast} from 'react-hot-toast';
 
 
 const Login = () => {
+  const firebaseAuth = getAuth(app);
+  const provider= new GoogleAuthProvider();
 
   const {state,dispatch}=useContext(userContext);  
+
+  //used for firebase authentication
+  const [auth, setAuth]= useState(false||window.localStorage.getItem("auth")===true);
+  const loginWithGoogle = async ()=>{
+    await signInWithPopup(firebaseAuth,provider).then((userCred)=>{
+      if(userCred){
+        setAuth(true);
+        navigate('/');
+      }
+    })
+  }
 
   const navigate=useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -34,6 +50,7 @@ const Login = () => {
     const data=await res.json();
     if(data.status===400 || !data){
         console.log("Fail to Sign Up");
+        toast.error('Sign Up Failed no data available');
     }else{
       console.log("Success");
         dispatch({type:"USER",payload:1});
@@ -102,6 +119,15 @@ const Login = () => {
                 }
               </div>
             </form>
+
+            <div>
+              <h4>Sign in with google  <br />
+              <button onClick={loginWithGoogle}
+               className='rounded-full py-2 px-3 uppercase text-xs font-medium border-spacing-1 bg-red-600 text-cyan-50'> 
+               click here</button>
+              </h4>
+            </div>
+
           </div>
         </div>
 
